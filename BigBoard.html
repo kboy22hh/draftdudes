@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGZ Draft | Big Board</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@500;700&family=Rajdhani:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Main.css">
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #050810;
+            color: #c0c8d8;
+            font-family: 'Rajdhani', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #050810 0%, #0f1419 100%);
+            border-bottom: 2px solid #c0c8d8;
+            padding: 2rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 0.15em;
+            color: #c0c8d8;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.08em;
+            color: #8a92a4;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #8a92a4;
+            font-weight: 500;
+        }
+
+        select, input {
+            background: #0f1419;
+            border: 1px solid #c0c8d8;
+            color: #c0c8d8;
+            padding: 0.6rem 0.8rem;
+            font-family: 'Rajdhani', monospace;
+            font-size: 0.9rem;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        select:hover, input:hover {
+            border-color: #ffffff;
+        }
+
+        .bigboard {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .rank-tier {
+            margin-bottom: 2rem;
+        }
+
+        .tier-header {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #c0c8d8;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid #c0c8d8;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-header.tier1 {
+            color: #ffd700;
+            border-bottom-color: #ffd700;
+        }
+
+        .tier-header.tier2 {
+            color: #c0c8d8;
+            border-bottom-color: #c0c8d8;
+        }
+
+        .tier-header.tier3 {
+            color: #8a92a4;
+            border-bottom-color: #8a92a4;
+        }
+
+        .prospects-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .prospect-card {
+            background: #0f1419;
+            border: 1px solid #c0c8d8;
+            border-left: 4px solid #c0c8d8;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .prospect-card:hover {
+            background: #161b24;
+            border-color: #ffffff;
+            border-left-color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .prospect-card.tier1 {
+            border-left-color: #ffd700;
+        }
+
+        .prospect-card.tier1:hover {
+            border-left-color: #ffed4e;
+        }
+
+        .prospect-card.tier2 {
+            border-left-color: #c0c8d8;
+        }
+
+        .prospect-card.tier3 {
+            border-left-color: #8a92a4;
+        }
+
+        .rank-badge {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #c0c8d8;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            opacity: 0.3;
+        }
+
+        .prospect-card.tier1 .rank-badge {
+            color: #ffd700;
+        }
+
+        .prospect-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .prospect-position {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            color: #8a92a4;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .prospect-team {
+            color: #8a92a4;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-family: 'Rajdhani', monospace;
+        }
+
+        .prospect-pick {
+            display: inline-block;
+            background: #050810;
+            border-left: 2px solid #ffd700;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+
+        .prospect-summary {
+            color: #c0c8d8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            background: #050810;
+            padding: 0.8rem;
+            border-left: 2px solid #8a92a4;
+            margin-bottom: 1rem;
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #050810;
+            border: 1px solid #8a92a4;
+            color: #8a92a4;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 8, 16, 0.8);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #0f1419;
+            border: 2px solid #c0c8d8;
+            padding: 2rem;
+            max-width: 750px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            background: none;
+            border: none;
+            color: #c0c8d8;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #ffffff;
+        }
+
+        .modal-header {
+            margin-bottom: 2rem;
+            padding-right: 2rem;
+        }
+
+        .modal-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #8a92a4;
+        }
+
+        .modal-meta-item {
+            border-right: 1px solid #8a92a4;
+            padding-right: 1rem;
+        }
+
+        .modal-meta-item:last-child {
+            border-right: none;
+        }
+
+        .report-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .report-section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #c0c8d8;
+            border-bottom: 1px solid #8a92a4;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+        }
+
+        .report-text {
+            color: #c0c8d8;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .report-text ul {
+            margin-left: 1rem;
+            margin-top: 0.3rem;
+        }
+
+        .report-text li {
+            margin-bottom: 0.3rem;
+            list-style-position: inside;
+        }
+
+        .report-grade {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .grade-item {
+            background: #050810;
+            padding: 0.8rem;
+            border-left: 3px solid #8a92a4;
+        }
+
+        .grade-label {
+            font-size: 0.75rem;
+            color: #8a92a4;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.3rem;
+        }
+
+        .grade-value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            color: #c0c8d8;
+            letter-spacing: 0.05em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #8a92a4;
+            color: #8a92a4;
+            font-size: 0.85rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .prospects-row {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            select, input {
+                width: 100%;
+            }
+
+            .modal-content {
+                max-height: 90vh;
+            }
+        }
+    </style>
+</head>
+
+<!-- NAV -->
+<nav class="topnav" id="mainNav">
+  <a href="#" class="nav-logo">Draft<span>Dudes</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="BigBoard.html">Big Board</a></li>
+    <li><a href="MockDraft.html">Mock Draft</a></li>
+  </ul>
+  <a href="#" class="nav-cta">2026 Draft</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<body>
+    <br>
+    <header>
+        <div class="header-content">
+            <h1>Big Board</h1>
+            <p class="subtitle">2026 NFL Draft Scouting Rankings</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <div class="filter-group">
+                <label for="positionFilter">Position:</label>
+                <select id="positionFilter">
+                    <option value="">All Positions</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="tierFilter">Tier:</label>
+                <select id="tierFilter">
+                    <option value="">All Tiers</option>
+                    <option value="tier1">Elite</option>
+                    <option value="tier2">Star</option>
+                    <option value="tier3">Prospect</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="searchFilter">Search:</label>
+                <input type="text" id="searchFilter" placeholder="Player name...">
+            </div>
+        </div>
+
+        <div class="bigboard" id="bigboard"></div>
+    </div>
+
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <div class="modal-name" id="modalName"></div>
+                <div class="modal-meta">
+                    <div class="modal-meta-item" id="modalPosition"></div>
+                    <div class="modal-meta-item" id="modalTeam"></div>
+                    <div class="modal-meta-item" id="modalPick"></div>
+                </div>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>OGZ Draft &ndash; Independent scouting and analysis &ndash; 2026</p>
+    </footer>
+
+    <script>
+        const prospects = [
+            {
+                rank: 1,
+                name: "Fernando Mendoza",
+                position: "QB",
+                team: "Las Vegas Raiders",
+                pick: 1,
+                tier: "tier1",
+                summary: "Elite arm talent with advanced processing and decision-making prowess.",
+                tags: ["Arm Talent", "Leadership", "Mechanics"],
+                strengths: [
+                    "Exceptional arm strength and accuracy in all quadrants",
+                    "High-level decision-making and quick progression reading",
+                    "Strong leadership presence and locker room command"
+                ],
+                weaknesses: [
+                    "Pedestrian athleticism limits scramble ability",
+                    "Can hold ball too long extending plays",
+                    "Limited experience at top tier program"
+                ],
+                report: "Shows strong mechanical consistency with velocity on intermediate routes. Decision-making is advanced for his class, with poise in high-pressure situations."
+            },
+            {
+                rank: 2,
+                name: "Arvell Reese",
+                position: "LB",
+                team: "New York Jets",
+                pick: 2,
+                tier: "tier1",
+                summary: "Rare size-speed profile with advanced run recognition and versatile coverage ability.",
+                tags: ["Athleticism", "Versatility", "Gap Discipline"],
+                strengths: [
+                    "Rare blend of size, speed, and versatility",
+                    "Advanced run recognition and quick trigger downhill",
+                    "Legitimate three-down value with flashes of safety-level instincts",
+                    "Exceptional tackling efficiency with explosive first step"
+                ],
+                weaknesses: [
+                    "Coverage consistency remains his biggest area for improvement",
+                    "Can be late gaining depth on play-action",
+                    "Struggles in man coverage against quicker tight ends",
+                    "Lacks polished pass-rush sequencing"
+                ],
+                report: "Moves with true sideline-to-sideline range, closing space faster than most linebackers in the country. His run recognition is advanced for his experience level, triggering downhill with urgency and arriving with force."
+            },
+            {
+                rank: 3,
+                name: "David Bailey",
+                position: "DL",
+                team: "Arizona Cardinals",
+                pick: 3,
+                tier: "tier1",
+                summary: "Explosive pass rusher with freaky first-step and diverse counter arsenal.",
+                tags: ["Pass Rush", "Bend", "Motor"],
+                strengths: [
+                    "Freaky first-step that wins before tackles get into sets",
+                    "Rare twitch, burst, and top-end speed",
+                    "Hip flexibility and ability to bend low around arc",
+                    "Diverse counter arsenal with elite pressure numbers"
+                ],
+                weaknesses: [
+                    "Frame approaching maxed out, lacks ideal run-game size",
+                    "Struggles against power schemes at point of attack",
+                    "Option concepts can freeze him with indecisive reads",
+                    "Aggressive pursuit style can lead to overruns"
+                ],
+                report: "One of the most explosive and naturally gifted pass rushers in college football. His athletic profile is rare—twitch, burst, and top-end speed that climbs like a gear-shifting sports car, allowing him to build momentum and become nearly impossible to recover against."
+            },
+            {
+                rank: 4,
+                name: "Jeremiyah Love",
+                position: "RB",
+                team: "Tennessee Titans",
+                pick: 4,
+                tier: "tier1",
+                summary: "Elite contact balance and vision in space with exceptional decisiveness.",
+                tags: ["Contact Balance", "Vision", "One-Cut"],
+                strengths: [
+                    "Exceptional contact balance and pad level",
+                    "Outstanding vision in space",
+                    "Decisive one-cut ability",
+                    "Rare balance for position against bigger defenders"
+                ],
+                weaknesses: [
+                    "Durability concerns from prior injuries",
+                    "Below-average top-end speed limiting upside",
+                    "Limited receiving ability in space",
+                    "Pad level inconsistency on long runs"
+                ],
+                report: "Shows exceptional contact balance, breaking tackles through leverage and pad level rather than pure power. His vision in space reveals rare understanding of angles and open grass, making him dangerous in read-option concepts."
+            },
+            {
+                rank: 5,
+                name: "Sonny Styles",
+                position: "LB",
+                team: "New York Giants",
+                pick: 5,
+                tier: "tier1",
+                summary: "Historically rare size-speed profile with elite coverage versatility.",
+                tags: ["Athleticism", "Coverage", "Leadership"],
+                strengths: [
+                    "Historically rare size-speed profile in 99th percentile explosiveness",
+                    "Safety-level coverage ability with vertical route prowess",
+                    "6'4\" frame with lateral agility uncommon for position",
+                    "Exceptional tackling efficiency and leadership"
+                ],
+                weaknesses: [
+                    "Long frame creates leverage issues on high tackle attempts",
+                    "Play-action and boot fakes occasionally manipulate him out of gap",
+                    "Play strength against interior linemen still developing",
+                    "Lacks anticipation in coverage for playmaking consistency"
+                ],
+                report: "Brings historically rare size-speed profile to the linebacker position. His background as a safety shows up immediately—he covers ground effortlessly, erasing angles on perimeter runs and matching tight ends in space with ease."
+            },
+            {
+                rank: 6,
+                name: "Carnell Tate",
+                position: "WR",
+                team: "Cleveland Browns",
+                pick: 6,
+                tier: "tier2",
+                summary: "Polished receiver with strong hands and refined route running.",
+                tags: ["Route Running", "Hands", "Consistency"],
+                strengths: [
+                    "Sharp route runner with precise footwork",
+                    "Reliable hands in contested situations",
+                    "Consistent production against elite DB",
+                    "Strong ball tracking ability"
+                ],
+                weaknesses: [
+                    "Average athleticism limits upside potential",
+                    "Below-average RAC ability",
+                    "Questions about elite-level separation",
+                    "Will need to add functional strength"
+                ],
+                report: "Polished college receiver who wins on craft over athleticism. Shows advanced understanding of defender positioning and consistently finds soft spots in coverage with intelligent route running."
+            },
+            {
+                rank: 7,
+                name: "Caleb Downs",
+                position: "S",
+                team: "Washington Commanders",
+                pick: 7,
+                tier: "tier1",
+                summary: "Rare, scheme-proof defensive weapon with elite processing and versatility.",
+                tags: ["Instincts", "Versatility", "Ball Skills"],
+                strengths: [
+                    "Rare, scheme-proof defensive weapon with elite processing speed",
+                    "Diagnoses concepts faster than most safeties",
+                    "True chess piece—comfortable in box, rotating deep, or in man",
+                    "Consistently clean and controlled tackling in space",
+                    "Exceptional ball-hawking instincts and playmaking ability"
+                ],
+                weaknesses: [
+                    "Aggressive play style can work against him at times",
+                    "Sometimes hunts highlight hit instead of securing sure tackle",
+                    "Can get caught staring into backfield on zone",
+                    "Gambles on jumps when safer play is contesting catch point"
+                ],
+                report: "Elite processing speed allows him to play a step ahead of the offense. Operates as true chess piece, comfortable in the box, rotating as deep-half defender, matching tight ends in man coverage, or functioning as single-high eraser."
+            },
+            {
+                rank: 8,
+                name: "Mansoor Delane",
+                position: "DB",
+                team: "New Orleans Saints",
+                pick: 8,
+                tier: "tier1",
+                summary: "Highly polished corner with elite route recognition and disciplined technique.",
+                tags: ["Route Recognition", "Ball Skills", "Versatility"],
+                strengths: [
+                    "Elite route recognition and timing",
+                    "Fluid hips and quick feet without grabbing",
+                    "Elite ball production—8 career interceptions",
+                    "LSU season lockdown consistency",
+                    "Scheme-versatile with zone and man capability"
+                ],
+                weaknesses: [
+                    "30-inch arms below average for outside corner",
+                    "Lean frame raises durability concerns",
+                    "Aggressive instincts manipulated by pump fakes",
+                    "Needs functional strength for 17-game season",
+                    "Press coverage transitions still developing"
+                ],
+                report: "Highly polished, instinctive corner whose game is built on elite route recognition and disciplined technique. Consistently reads route combinations before they fully develop, positioning himself in throwing lanes with rare anticipation."
+            },
+            {
+                rank: 9,
+                name: "Francis Mauigoa",
+                position: "OL",
+                team: "Kansas City Chiefs",
+                pick: 9,
+                tier: "tier1",
+                summary: "Rare physical specimen with elite anchor and surprising athleticism.",
+                tags: ["Anchor", "Athleticism", "Coachability"],
+                strengths: [
+                    "Rare physical specimen with elite muscle density",
+                    "Overwhelming anchor that stonewalls bull rushers",
+                    "Hands arrive with concussive force, stun defenders at contact",
+                    "Surprising burst and body control despite massive build",
+                    "Nasty run-blocking demeanor with consistent finishing"
+                ],
+                weaknesses: [
+                    "Lateral quickness tops out at good, not great",
+                    "Extended pass sets expose stiffness in mirror ability",
+                    "Hand placement can drift outside the frame",
+                    "Pad level becomes inconsistent on long drives",
+                    "Still refining processing against complex blitz packages"
+                ],
+                report: "Built like a refrigerator with legs, carrying elite muscle density across 315-pound frame. His anchor is overwhelming—bull rushers simply stop on contact. Despite his massive build, Mauigoa moves with surprising burst and body control."
+            },
+            {
+                rank: 10,
+                name: "Jordyn Tyson",
+                position: "DB",
+                team: "Cincinnati Bengals",
+                pick: 10,
+                tier: "tier2",
+                summary: "High-IQ corner with elite spatial awareness and technical refinement.",
+                tags: ["Ball Skills", "Technique", "Versatility"],
+                strengths: [
+                    "High-IQ, ball-hawking corner with elite spatial awareness",
+                    "Elite ball skills and technical refinement",
+                    "Exceptional discipline in zone coverage",
+                    "Advanced route recognition and fluid transitions",
+                    "Strong competitiveness at catch point"
+                ],
+                weaknesses: [
+                    "Notable durability flag after January 2025 ACL tear",
+                    "Limited recent sample size from injury",
+                    "Can get grabby when beaten downfield",
+                    "Tackling form in space needs refinement",
+                    "Run-support engagement fluctuates"
+                ],
+                report: "High-IQ, ball-hawking corner with elite spatial awareness and technical refinement to mirror receivers at every level of the field. Ball skills stand out immediately—tracks and high-points throws through contact with ease."
+            },
+            {
+                rank: 11,
+                name: "Ruben Bain",
+                position: "DL",
+                team: "Miami Dolphins",
+                pick: 11,
+                tier: "tier2",
+                summary: "Disruptive high-motor pass rusher with elite first-step quickness.",
+                tags: ["First Step", "Hands", "Motor"],
+                strengths: [
+                    "Elite first-step quickness and violent hands",
+                    "Fires off ball before tackles can get hands set",
+                    "Naturally converts speed to power",
+                    "Equally aggressive run defense with relentless effort",
+                    "Alignment versatility gives coordinators deployment freedom"
+                ],
+                weaknesses: [
+                    "Arm length measured under 31 inches limits finishing",
+                    "Gap discipline can be inconsistent",
+                    "Gambles for splash plays and occasionally vacates lane",
+                    "Secondary hand usage needs refinement",
+                    "Missed-tackle rate above 20 percent"
+                ],
+                report: "Disruptive, high-motor pass rusher whose game is built on elite first-step quickness and violent hands. He fires off the ball before tackles can even get their hands set, landing a forceful initial punch."
+            },
+            {
+                rank: 12,
+                name: "Jermod McCoy",
+                position: "DB",
+                team: "Indianapolis Colts",
+                pick: 12,
+                tier: "tier2",
+                summary: "High-IQ corner with elite ball-hawking instincts and technical skill.",
+                tags: ["Ball Skills", "Instincts", "Press Coverage"],
+                strengths: [
+                    "High-IQ, ball-hawking corner with elite spatial awareness",
+                    "Tracks and high-points throws with timing and body control",
+                    "Exceptionally disciplined in zone with closing burst",
+                    "Advanced route recognition rarely fooled",
+                    "Clinical press technique with well-timed jams"
+                ],
+                weaknesses: [
+                    "Notable durability flag from January 2025 ACL tear",
+                    "Limited recent tape from injury recovery",
+                    "Gets grabby when beaten downfield",
+                    "Tackling form in space needs refinement",
+                    "Run-support engagement inconsistent"
+                ],
+                report: "High-IQ, ball-hawking corner with elite spatial awareness and the technical refinement to mirror receivers at every level of the field. His ball skills stand out immediately—he tracks and high-points throws through contact with ease."
+            },
+            {
+                rank: 13,
+                name: "Makai Lemon",
+                position: "WR",
+                team: "Los Angeles Rams",
+                pick: 13,
+                tier: "tier2",
+                summary: "Explosive athlete with rare receiving upside and alignment flexibility.",
+                tags: ["Athleticism", "Receiving", "Versatility"],
+                strengths: [
+                    "Explosive lower body mobility with short-area burst",
+                    "Adequate arm strength for receiver position",
+                    "Extremely competitive and mentally tough",
+                    "Can play aligned or split with comfort",
+                    "Dynamic after-catch ability"
+                ],
+                weaknesses: [
+                    "Played at lower competition level historically",
+                    "Inconsistent accuracy on deep routes",
+                    "Decision-making can be reckless at times",
+                    "Durability concerns from prior injuries",
+                    "Needs refinement in route discipline"
+                ],
+                report: "Explosive athlete dominating competition with athleticism and improvisation. Shows adequate arm strength in limited context with ability to make plays with feet and body control in space."
+            },
+            {
+                rank: 14,
+                name: "Olaivavega Ioane",
+                position: "OL",
+                team: "Baltimore Ravens",
+                pick: 14,
+                tier: "tier1",
+                summary: "Most reliable and technically advanced pass-protecting guard in class.",
+                tags: ["Pass Protection", "Anchor", "Technique"],
+                strengths: [
+                    "Most reliable and technically advanced pass-protecting guard",
+                    "Zero sacks, zero hits, only 4 hurries across 613 snaps in 2025",
+                    "Sets anchors like rooted into turf against bull rushers",
+                    "Overwhelming grip strength and consistent contact balance",
+                    "Advanced stunt and twist recognition"
+                ],
+                weaknesses: [
+                    "Run-blocking consistency lags behind pass protection",
+                    "Lateral quickness is below average",
+                    "Pad level rises too quickly after initial contact",
+                    "Struggles reaching perimeter or climbing second level",
+                    "Hand timing in run game remains inconsistent"
+                ],
+                report: "One of the most reliable and technically advanced pass-protecting guards in the country, with production that translates cleanly to the NFL. His 2025 tape speaks volumes—zero sacks, zero hits, and only four hurries across 613 snaps."
+            },
+            {
+                rank: 15,
+                name: "Keldric Faulk",
+                position: "DL",
+                team: "Tampa Bay Buccaneers",
+                pick: 15,
+                tier: "tier1",
+                summary: "Imposing defensive lineman with rare size-power blend and run dominance.",
+                tags: ["Run Defense", "Power", "Versatility"],
+                strengths: [
+                    "Imposing scheme-versatile defensive lineman",
+                    "Rare blend of size, power, and run-game dominance",
+                    "Run defense already NFL-caliber with 62 run stops",
+                    "Legitimate two-gap potential with alignment versatility",
+                    "Long-arm stab maximizes reach advantage"
+                ],
+                weaknesses: [
+                    "Pass-rush ceiling tied to athletic limitations",
+                    "First-step quickness inconsistent, especially on run-pass reads",
+                    "Bend and arc speed grade below average for edge",
+                    "Lacks reliable counters when initial move stalls",
+                    "Hand placement on first contact needs refinement"
+                ],
+                report: "Imposing, scheme-versatile defensive lineman with rare blend of size, power, and run-game dominance. At 6'6\", 285 pounds with elite strength, he plays with violent hands and overwhelming anchor ability that immediately translates to Sundays."
+            },
+            {
+                rank: 16,
+                name: "Omar Cooper Jr.",
+                position: "OL",
+                team: "New York Jets",
+                pick: 16,
+                tier: "tier2",
+                summary: "Experienced tackle with solid athleticism and consistent processing.",
+                tags: ["Consistency", "Processing", "Experience"],
+                strengths: [
+                    "Experienced pass protection with solid athletic profile",
+                    "Shows poise under pressure in SEC competition",
+                    "Consistent accuracy on protection adjustments",
+                    "Good footwork and hand placement mechanics",
+                    "Durable with reliable production"
+                ],
+                weaknesses: [
+                    "Not an explosive athlete limiting ceiling",
+                    "Late-game decision-making concerns emerge",
+                    "Mechanical inconsistencies under pressure",
+                    "Run-blocking shows development needs",
+                    "Limited counter-move arsenal"
+                ],
+                report: "Experienced offensive tackle who manages pass protection efficiently. Shows adequate athleticism with solid mechanical consistency in controlled settings."
+            },
+            {
+                rank: 17,
+                name: "Spencer Fano",
+                position: "OL",
+                team: "Detroit Lions",
+                pick: 17,
+                tier: "tier2",
+                summary: "Exceptionally fluid athlete for size with strong processing ability.",
+                tags: ["Athleticism", "Footwork", "Versatility"],
+                strengths: [
+                    "Exceptionally fluid athlete for his size",
+                    "Lateral agility, balance, and body control",
+                    "Real explosiveness in stance with strong processing",
+                    "Independent hand usage continuing development",
+                    "Competitiveness and grit in run game"
+                ],
+                weaknesses: [
+                    "Leaner build raises strength conversion questions",
+                    "Arm length may limit left side projection",
+                    "Hand usage can drift outside frame",
+                    "Pad level rises on drive blocks occasionally",
+                    "Opens outside hip too early against speed"
+                ],
+                report: "Exceptionally fluid athlete for his size, moving with the ease of a tight end despite carrying a tackle's frame. His lateral agility, balance, and body control allow him to climb to the second level with impressive precision."
+            },
+            {
+                rank: 18,
+                name: "Dillon Thieneman",
+                position: "S",
+                team: "Minnesota Vikings",
+                pick: 18,
+                tier: "tier2",
+                summary: "Most instinctive safety in class with elite coverage awareness.",
+                tags: ["Instincts", "Coverage", "Awareness"],
+                strengths: [
+                    "Most instinctive safety in class",
+                    "Elite coverage awareness and route concept understanding",
+                    "Eyes disciplined on quarterback anticipating throws",
+                    "Fluid hips and smooth backpedal with effortless transitions",
+                    "True alignment chameleon with significant multi-role experience"
+                ],
+                weaknesses: [
+                    "Aggressive play style used against him on play-action",
+                    "Change-of-direction quickness only average",
+                    "Pursuit angles need refinement on perimeter",
+                    "Block-shedding remains work in progress",
+                    "Occasional hesitation against complex route combinations"
+                ],
+                report: "One of the most instinctive safeties in the class, showing elite coverage awareness and advanced understanding of route concepts. His eyes stay disciplined on the quarterback, allowing him to anticipate throws and close windows before release."
+            },
+            {
+                rank: 19,
+                name: "Kenyon Sadiq",
+                position: "TE",
+                team: "Carolina Panthers",
+                pick: 19,
+                tier: "tier1",
+                summary: "Most explosive athlete to tight end pipeline with rare separation ability.",
+                tags: ["Athleticism", "Receiving", "Upside"],
+                strengths: [
+                    "Most explosive athletes to tight end pipeline in years",
+                    "4.39 forty, 43.5-inch vertical, 11'1\" broad jump elite",
+                    "Tracks ball naturally downfield with smooth adjustments",
+                    "Comfortable everywhere—in-line, slot, flexed, motion",
+                    "Dangerous playmaker once ball in hands"
+                ],
+                weaknesses: [
+                    "Undersized for every-down NFL tight end at 241-245 lbs",
+                    "Frame shows up limiting in run game",
+                    "Blocking technique remains inconsistent",
+                    "Focus drops appear on routine throws",
+                    "Press coverage can disrupt timing"
+                ],
+                report: "One of the most explosive athletes to enter the tight end pipeline in years. His rare burst shows up on tape through quick-twitch footwork and ability to separate out of breaks, routinely leaving linebackers flat-footed."
+            },
+            {
+                rank: 20,
+                name: "Ahkeem Mesidor",
+                position: "DL",
+                team: "Dallas Cowboys",
+                pick: 20,
+                tier: "tier1",
+                summary: "Most technically refined and versatile pass rusher in class.",
+                tags: ["Pass Rush", "Technique", "Versatility"],
+                strengths: [
+                    "Most technically refined and versatile pass rusher",
+                    "Deep arsenal of moves strung together with rare fluidity",
+                    "Outstanding snap anticipation fueling consistent edge threats",
+                    "Advanced hand usage beating linemen to strike point",
+                    "Alignment versatility across defensive line"
+                ],
+                weaknesses: [
+                    "Lacks prototypical edge size at 6'3\" with shorter arms",
+                    "Speed-to-power conversion can be hit-or-miss",
+                    "Occasionally narrows base through contact",
+                    "Aggressive pursuit can take him out of position",
+                    "Durability concern from multiple foot surgeries"
+                ],
+                report: "One of the most technically refined and versatile pass rushers in the class, boasting a deep arsenal of moves that he strings together with rare fluidity. His swipe, arm-over, cross-chop, club-rip combinations keep tackles off balance."
+            },
+            {
+                rank: 21,
+                name: "Monroe Freeling",
+                position: "OL",
+                team: "Pittsburgh Steelers",
+                pick: 21,
+                tier: "tier1",
+                summary: "Rare athletic profile for tackle position with improved pass protection.",
+                tags: ["Athleticism", "Footwork", "Development"],
+                strengths: [
+                    "Rare athletic profile pairing 6'7\" frame with verified explosiveness",
+                    "Pass protection took major leap in 2025 against SEC",
+                    "Basketball background shows in balance and spatial awareness",
+                    "Quick efficient first step reaching landmarks",
+                    "Active, independent hands with recovery ability"
+                ],
+                weaknesses: [
+                    "Run blocking remains inconsistent despite pass gains",
+                    "Gets tall through hips losing power at point of attack",
+                    "Needs 10-15 pounds functional mass for anchor",
+                    "Tendency to lunge undermines length advantage",
+                    "Limited starting experience leaves NFL readiness questions"
+                ],
+                report: "Rare athletic profile to the offensive tackle position, pairing a 6'7\" frame with 34-inch arms and verified explosiveness. His pass protection took a major leap in 2025—allowing minimal pressure across 747 snaps against SEC edge talent."
+            },
+            {
+                rank: 22,
+                name: "T.J. Parker",
+                position: "DL",
+                team: "Los Angeles Chargers",
+                pick: 22,
+                tier: "tier1",
+                summary: "Violent, technically polished edge with advanced hand usage.",
+                tags: ["Pass Rush", "Hands", "Power"],
+                strengths: [
+                    "Violent, technically polished edge defender",
+                    "Advanced hand usage and power at point of attack",
+                    "Elite ball-stripping ability with precise timing",
+                    "Long-arm rush true difference-maker",
+                    "Firm, immovable edge setting with veteran discipline"
+                ],
+                weaknesses: [
+                    "Pass-rush ceiling capped by lack of elite get-off",
+                    "Not winning footraces to edge consistently",
+                    "Down blocks can displace when landing clean",
+                    "Range limited on plays flowing away",
+                    "Needs more depth in counter repertoire"
+                ],
+                report: "Violent, technically polished edge defender whose game is built on advanced hand usage, power, and relentless competitiveness. He weaponizes his hands at the point of attack, striking with force and layering active counters."
+            },
+            {
+                rank: 23,
+                name: "Kaydyn Proctor",
+                position: "OL",
+                team: "Philadelphia Eagles",
+                pick: 23,
+                tier: "tier1",
+                summary: "Rare physical specimen with historic athletic testing and elite anchor.",
+                tags: ["Anchor", "Athleticism", "Power"],
+                strengths: [
+                    "Rare physical specimen at left tackle",
+                    "Massive 6'7\", 350-plus frame with historic athletic testing",
+                    "Elite anchor with powerful initial punch",
+                    "Displaces defenders off ball with consistent power",
+                    "Three years SEC starting experience with zero-pressure games"
+                ],
+                weaknesses: [
+                    "Pass-protection technique remains inconsistent",
+                    "Beaten inside too often with exploitable lateral redirect",
+                    "Feet narrow or cross under pressure killing base",
+                    "Pad level rises as games wear on",
+                    "Weight management real concern approaching 370 lbs"
+                ],
+                report: "Rare physical specimen at left tackle, boasting a massive 6'7\", 350-plus-pound frame paired with historic athletic testing. His anchor is elite; once he sinks and plants, bull rushers simply stop on contact."
+            },
+            {
+                rank: 24,
+                name: "Blake Miller",
+                position: "OL",
+                team: "Cleveland Browns",
+                pick: 24,
+                tier: "tier2",
+                summary: "Experienced, athletic offensive tackle with strong pass protection.",
+                tags: ["Experience", "Athleticism", "Durability"],
+                strengths: [
+                    "Experienced, athletic offensive tackle",
+                    "Movement skills and processing stand out immediately",
+                    "Efficient kick slide with early position advantage",
+                    "Improved pass protection each year at Clemson",
+                    "Elite durability with 54 consecutive starts"
+                ],
+                weaknesses: [
+                    "Run blocking never matched pass protection consistency",
+                    "Pad level stays too high on climbs",
+                    "Lighter frame susceptible to being moved off spot",
+                    "Hand placement drifts wide creating vulnerability",
+                    "Technical refinement needed in pad level and placement"
+                ],
+                report: "Experienced, athletic offensive tackle whose movement skills and processing stand out immediately on tape. His pass protection improved each year at Clemson, peaking with a senior season where he kept his quarterback remarkably clean."
+            },
+            {
+                rank: 25,
+                name: "Emmanuel McNeil-Warren",
+                position: "S",
+                team: "Chicago Bears",
+                pick: 25,
+                tier: "tier2",
+                summary: "Rare physical and athletic profile with proven playmaking ability.",
+                tags: ["Athleticism", "Ball Skills", "Versatility"],
+                strengths: [
+                    "Rare physical and athletic profile for safety",
+                    "Standing 6'3½\" with 32-inch arms and movement skills",
+                    "Proven playmaker with 9 career forced fumbles",
+                    "Advanced zone coverage instincts and closing ability",
+                    "Fills gaps with physicality and decisiveness"
+                ],
+                weaknesses: [
+                    "Man coverage against quick receivers inconsistent",
+                    "Combine testing confirmed only average explosiveness",
+                    "Pre-snap movement overly bouncy on run reads",
+                    "Open-field tackling remains work in progress",
+                    "Small-school background adjustment period needed"
+                ],
+                report: "Emmanuel McNeil-Warren brings a rare physical and athletic profile to the safety position, standing 6'3½\" with 32-plus-inch arms and the movement skills to match. His size, range, and fluidity allow him to line up all over the secondary."
+            },
+            {
+                rank: 26,
+                name: "Cashius Howell",
+                position: "DL",
+                team: "Buffalo Bills",
+                pick: 26,
+                tier: "tier2",
+                summary: "Dynamic, explosive edge with natural bend and deep pass-rush toolbox.",
+                tags: ["Pass Rush", "Bend", "Speed"],
+                strengths: [
+                    "Dynamic, explosive edge rusher",
+                    "Violent first-step acceleration and natural bend",
+                    "Ankle flexibility and hip mobility",
+                    "Inside spin counter legitimate weapon",
+                    "Outstanding backside pursuit ability"
+                ],
+                weaknesses: [
+                    "30¼-inch arms historically short for edge",
+                    "Gets knocked around at point of attack by power",
+                    "Edge-setting technique inconsistent",
+                    "Pass-rush sequencing fires best move immediately",
+                    "Range limited on plays flowing away"
+                ],
+                report: "Dynamic, explosive edge rusher whose game is built on violent first-step acceleration, natural bend, and a deep pass-rush toolbox. His get-off is borderline violent—he regularly beats tackles out of their stance."
+            },
+            {
+                rank: 27,
+                name: "Caleb Lomu",
+                position: "OL",
+                team: "San Francisco 49ers",
+                pick: 27,
+                tier: "tier2",
+                summary: "Rare athletic specimen at tackle with elite first-step and processing.",
+                tags: ["Athleticism", "Footwork", "Processing"],
+                strengths: [
+                    "Rare athletic specimen at offensive tackle",
+                    "Movement skills that shouldn't exist at 313 pounds",
+                    "Tight-end caliber first step with early landmark arrival",
+                    "Hands land early and violently in protection",
+                    "Advanced processing handling twists and stunts"
+                ],
+                weaknesses: [
+                    "Core power glaring issue showing in tape and testing",
+                    "Run blocking lags full tier behind pass protection",
+                    "Arm length and hand size both below average",
+                    "Doesn't consistently finish blocks",
+                    "Zone-blocking angles inconsistent"
+                ],
+                report: "Rare athletic specimen at offensive tackle, exploding out of his stance with movement skills that simply shouldn't exist at 313 pounds. His first step is tight-end caliber, consistently beating defensive ends to the landmark."
+            },
+            {
+                rank: 28,
+                name: "Peter Woods",
+                position: "DL",
+                team: "Houston Texans",
+                pick: 28,
+                tier: "tier1",
+                summary: "Freakish interior athlete with devastating first-step and rare bend.",
+                tags: ["Athleticism", "Hands", "Versatility"],
+                strengths: [
+                    "Freakish interior athlete with devastating first-step",
+                    "Rare bend and body control for 315 pounds",
+                    "Violent hand strikes with concussive force",
+                    "Sideline-to-sideline range stunning for build",
+                    "Scheme versatility across defensive line"
+                ],
+                weaknesses: [
+                    "Gap discipline remains inconsistent",
+                    "Gambles too often for splash plays",
+                    "Pass-rush arsenal lacks depth beyond burst",
+                    "Anchor can be compromised by double teams",
+                    "Production hasn't matched traits consistently"
+                ],
+                report: "One of the most freakish interior athletes in college football, pairing a devastating first step with rare bend and body control for a 315-pound defender. His get-off is violent—guards are often in recovery mode from the snap."
+            },
+            {
+                rank: 29,
+                name: "Kevin Concepcion",
+                position: "WR",
+                team: "Kansas City Chiefs",
+                pick: 29,
+                tier: "tier2",
+                summary: "Explosive, twitchy playmaker with advanced route instincts.",
+                tags: ["Explosiveness", "Hands", "Special Teams"],
+                strengths: [
+                    "Explosive, twitchy playmaker with rare acceleration",
+                    "Short-area burst creating natural separation",
+                    "Converted 10 of 15 contested-catch opportunities",
+                    "Dynamic after-catch with vision and balance",
+                    "Legitimate punt-return specialist impact"
+                ],
+                weaknesses: [
+                    "Compact frame limits catch radius",
+                    "Drop rate 19 drops on 186 career catches concern",
+                    "Routes can lack pacing and tempo variance",
+                    "Adjusting to unexpected velocity inconsistent",
+                    "Blocking effort and technique inconsistent"
+                ],
+                report: "Explosive, twitchy playmaker whose acceleration and short-area burst immediately jump off the screen. His first-step quickness and ability to accelerate through the first 15 yards of his stem create natural separation."
+            },
+            {
+                rank: 30,
+                name: "Denzel Boston",
+                position: "WR",
+                team: "Miami Dolphins",
+                pick: 30,
+                tier: "tier2",
+                summary: "Built like prototypical X receiver with polished footwork.",
+                tags: ["Size", "Ball Skills", "Blocking"],
+                strengths: [
+                    "Built like prototypical X receiver at 6'4\"",
+                    "Gets up to speed quickly carrying through routes",
+                    "Outstanding downfield tracking ability",
+                    "Red-zone production with 20 touchdowns in two seasons",
+                    "Strong hands securing through contact"
+                ],
+                weaknesses: [
+                    "Release package needs refinement—too linear",
+                    "Not a burner without combine testing",
+                    "Questions about true top-end speed",
+                    "Production dipped against top competition",
+                    "After-catch more contact runner than creator"
+                ],
+                report: "Denzel Boston is built like a prototypical X receiver at 6'4\", with long arms and a natural understanding of how to use his frame to wall off defenders. He gets up to speed quickly and carries it through his routes without wasted motion."
+            },
+            {
+                rank: 31,
+                name: "Max Iheanachor",
+                position: "OL",
+                team: "New England Patriots",
+                pick: 31,
+                tier: "tier2",
+                summary: "Exceptional size-length with rare movement skills for position.",
+                tags: ["Athleticism", "Footwork", "Length"],
+                strengths: [
+                    "Exceptional size-length combination",
+                    "6'6\" 325 pounds with 34.5-inch arms",
+                    "Rare movement skills for tackle position",
+                    "Tailor-made for zone-blocking concepts",
+                    "Outstanding 2025 pass-protection tape"
+                ],
+                weaknesses: [
+                    "Hand timing remains developmental need",
+                    "Stunt and twist recognition inconsistent",
+                    "Run blocking lags behind pass protection",
+                    "Against speed rushers tends to overset",
+                    "16 penalties across three seasons concerning"
+                ],
+                report: "This prospect brings an exceptional blend of size, length, and rare movement skills to the offensive tackle position. At 6'6\" and 325 pounds with 34.5-inch arms, he carries prototype measurables and uses every inch to widen rush angles."
+            },
+            {
+                rank: 32,
+                name: "Avieon Terrell",
+                position: "DB",
+                team: "Seattle Seahawks",
+                pick: 32,
+                tier: "tier2",
+                summary: "Most instinctive cornerback in class with elite zone recognition.",
+                tags: ["Instincts", "Ball Skills", "Competitiveness"],
+                strengths: [
+                    "Most instinctive cornerback in class with elite instincts",
+                    "Reads concepts not just receivers",
+                    "Ball production reflects elite anticipation",
+                    "Forced-fumble technique draws Peanut Tillman comparisons",
+                    "Fluid hips maintaining in-phase positioning"
+                ],
+                weaknesses: [
+                    "Lean frame around 180 pounds limits contested situations",
+                    "Quick releases across face give trouble in soft press",
+                    "Gets grabby when losing in trail",
+                    "Tackling technique needs refinement",
+                    "Short zone recognition can be inconsistent"
+                ],
+                report: "Avieon Terrell is one of the most instinctive and scheme-versatile cornerbacks in the class, with zone eyes that jump off the screen. His ability to read concepts, not just receivers, is elite—the tape shows him jumping multiple routes."
+            }
+        ];
+
+        function populatePositions() {
+            const positions = [...new Set(prospects.map(p => p.position))].sort();
+            const select = document.getElementById('positionFilter');
+            positions.forEach(pos => {
+                const option = document.createElement('option');
+                option.value = pos;
+                option.textContent = pos;
+                select.appendChild(option);
+            });
+        }
+
+        function renderBigBoard(filtered) {
+            const board = document.getElementById('bigboard');
+            board.innerHTML = '';
+
+            const tiers = ['tier1', 'tier2', 'tier3'];
+            const tierLabels = {
+                tier1: 'Elite Prospects',
+                tier2: 'Star Prospects',
+                tier3: 'Strong Prospects'
+            };
+            const tierClasses = {
+                tier1: 'tier1',
+                tier2: 'tier2',
+                tier3: 'tier3'
+            };
+
+            tiers.forEach(tier => {
+                const tierProspects = filtered.filter(p => p.tier === tier);
+                if (tierProspects.length === 0) return;
+
+                const tierDiv = document.createElement('div');
+                tierDiv.className = 'rank-tier';
+                
+                const header = document.createElement('div');
+                header.className = `tier-header ${tierClasses[tier]}`;
+                header.textContent = tierLabels[tier];
+                
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'prospects-row';
+                
+                tierProspects.forEach(prospect => {
+                    const card = createProspectCard(prospect);
+                    rowDiv.appendChild(card);
+                });
+
+                tierDiv.appendChild(header);
+                tierDiv.appendChild(rowDiv);
+                board.appendChild(tierDiv);
+            });
+        }
+
+        function createProspectCard(prospect) {
+            const card = document.createElement('div');
+            card.className = `prospect-card ${prospect.tier}`;
+            card.onclick = () => openModal(prospect);
+
+            card.innerHTML = `
+                <div class="rank-badge">${prospect.rank}</div>
+                <div class="prospect-name">${prospect.name}</div>
+                <div class="prospect-position">${prospect.position}</div>
+                <div class="prospect-team">${prospect.team}</div>
+                <div class="prospect-pick">Pick ${prospect.pick}</div>
+                <div class="prospect-summary">${prospect.summary}</div>
+                <div class="tags">
+                    ${prospect.tags.map(tag => `<div class="tag">${tag}</div>`).join('')}
+                </div>
+            `;
+
+            return card;
+        }
+
+        function openModal(prospect) {
+            const modal = document.getElementById('detailModal');
+            document.getElementById('modalName').textContent = prospect.name;
+            document.getElementById('modalPosition').textContent = prospect.position;
+            document.getElementById('modalTeam').textContent = prospect.team;
+            document.getElementById('modalPick').textContent = `#${prospect.pick}`;
+
+            let body = `
+                <div class="report-section">
+                    <div class="report-section-title">Overview</div>
+                    <div class="report-text">${prospect.report}</div>
+                </div>
+
+                <div class="report-section">
+                    <div class="report-section-title">Strengths</div>
+                    <div class="report-text">
+                        <ul>
+                            ${prospect.strengths.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <div class="report-section-title">Weaknesses</div>
+                    <div class="report-text">
+                        <ul>
+                            ${prospect.weaknesses.map(w => `<li>${w}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modalBody').innerHTML = body;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function filterProspects() {
+            const position = document.getElementById('positionFilter').value;
+            const tier = document.getElementById('tierFilter').value;
+            const search = document.getElementById('searchFilter').value.toLowerCase();
+
+            let filtered = prospects;
+
+            if (position) {
+                filtered = filtered.filter(p => p.position === position);
+            }
+
+            if (tier) {
+                filtered = filtered.filter(p => p.tier === tier);
+            }
+
+            if (search) {
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(search) || 
+                    p.team.toLowerCase().includes(search)
+                );
+            }
+
+            renderBigBoard(filtered);
+        }
+
+        document.getElementById('positionFilter').addEventListener('change', filterProspects);
+        document.getElementById('tierFilter').addEventListener('change', filterProspects);
+        document.getElementById('searchFilter').addEventListener('input', filterProspects);
+
+        window.closeModal = closeModal;
+
+        populatePositions();
+        renderBigBoard(prospects);
+    </script>
+</body>
+</html>

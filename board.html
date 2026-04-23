@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OGZ Draft · Big Board</title>
+
+  <!-- Fonts required by Main.css -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@500;700&family=Rajdhani:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="Main.css" />
+</head>
+
+<body>
+
+<!-- ── NAV ── -->
+<nav class="topnav">
+  <a href="index.html" class="nav-logo">Draft<span>Dudes</span></a>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="BigBoard.html" class="active">Big Board</a></li>
+    <li><a href="MockDraft.html">Mock Draft</a></li>
+  </ul>
+
+  <a href="#" class="nav-cta">2026 Draft</a>
+
+  <button class="hamburger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HEADER ── -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">
+      2026 <span>Big Board</span>
+    </h2>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="controls">
+    <div class="filter-group">
+      <label>Position</label>
+      <select id="positionFilter">
+        <option value="">All</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Tier</label>
+      <select id="tierFilter">
+        <option value="">All</option>
+        <option value="tier1">Elite</option>
+        <option value="tier2">Star</option>
+        <option value="tier3">Prospect</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Search</label>
+      <input id="searchFilter" type="text" placeholder="Player or team…" />
+    </div>
+  </div>
+
+  <!-- BIG BOARD -->
+  <div id="bigboard" class="prospects-grid"></div>
+</section>
+
+<!-- ── MODAL ── -->
+<div class="modal" id="detailModal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal()">×</button>
+
+    <div class="modal-header">
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-meta">
+        <div id="modalPosition"></div>
+        <div id="modalTeam"></div>
+        <div id="modalPick"></div>
+      </div>
+    </div>
+
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Draft<span>Dudes</span></div>
+  <div class="footer-copy">© 2026 OGZ Draft</div>
+</footer>
+
+<!-- ── SCRIPT ── -->
+<script src="bigboard.js"></script>
+</body>
+</html>
