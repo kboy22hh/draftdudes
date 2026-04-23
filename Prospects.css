@@ -1,0 +1,186 @@
+
+/* ============================================================
+   Fernando Mendoza QB Scouting Report — Brutalist Theme
+   NFL Draft 2026
+============================================================ */
+
+/* ============================================================
+   GLOBAL
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #0a0a0a; }
+
+/* ============================================================
+   THEME NAV
+============================================================ */
+.theme-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  display: flex; gap: 6px; padding: 10px 20px;
+  background: rgba(0,0,0,0.92); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-wrap: wrap; align-items: center;
+}
+.theme-nav span {
+  color: rgba(255,255,255,0.35); font-size: 10px;
+  font-family: 'Space Mono', monospace; letter-spacing: 3px;
+  text-transform: uppercase; margin-right: 8px;
+}
+.theme-btn {
+  padding: 5px 14px; border: 1px solid rgba(255,255,255,0.15);
+  background: transparent; color: rgba(255,255,255,0.5);
+  font-size: 10px; font-family: 'Space Mono', monospace;
+  letter-spacing: 1px; cursor: pointer; border-radius: 2px;
+  transition: all 0.2s; text-transform: uppercase;
+}
+.theme-btn:hover, .theme-btn.active { background: white; color: black; border-color: white; }
+section { display: none; min-height: 100vh; padding-top: 52px; }
+section.active { display: block; }
+
+/* ============================================================
+   THEME 1: BRUTALIST
+   Raw bold concrete aesthetic — Bebas Neue, neon lime
+============================================================ */
+#t1 {
+  background: #e9e5dd;
+  font-family: 'Oswald', sans-serif;
+}
+.b-header {
+  background: #990000;
+  padding: 60px 50px 50px;
+  position: relative; overflow: hidden;
+}
+.b-header::before {
+  content: 'QB';
+  position: absolute; right: -10px; top: -20px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 400px; line-height: 1;
+  color: #d94f4f; pointer-events: none;
+}
+.b-eyebrow {
+  display: inline-block; background: white; color: #000;
+  font-size: 10px; letter-spacing: 5px; padding: 4px 14px;
+  margin-bottom: 18px; font-family: 'Space Mono', monospace;
+}
+.b-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 12vw, 160px);
+  color: white; line-height: 0.85; letter-spacing: 1px;
+}
+.b-pos {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px; letter-spacing: 5px;
+  color: rgba(255,255,255,0.4); margin-top: 14px;
+}
+.b-grade-bar {
+  background: white; display: inline-block;
+  padding: 8px 30px; margin-top: 30px;
+}
+.b-grade-bar span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 60px; line-height: 1; color: #000;
+}
+.b-grade-bar small {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 3px; color: #000;
+  display: block; margin-top: 2px;
+}
+
+.b-stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 3px solid #000;
+}
+.b-stat {
+  padding: 20px 24px; border-right: 2px solid #000;
+  background: #e9e5dd;
+}
+.b-stat:last-child { border-right: none; }
+.b-stat .lbl {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; letter-spacing: 3px; color: #888; margin-bottom: 6px;
+}
+.b-stat .val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; color: #000; line-height: 1;
+}
+
+.b-body { padding: 0; }
+.b-section {
+  border-top: 3px solid #000;
+}
+.b-section-head {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; padding: 20px 30px;
+  background: #990000; cursor: pointer;
+}
+.b-section-head h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px; color: white; letter-spacing: 2px;
+}
+.b-section-head .b-sg {
+  background: white; color: #000;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; padding: 2px 16px;
+}
+.b-section-body { padding: 28px 30px; line-height: 1.9; font-size: 15px; color: #333; }
+
+.b-grades-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0; border: 2px solid #000; margin: 0 30px 30px;
+}
+.b-grade-cell {
+  border: 1px solid #000; padding: 20px; text-align: center;
+  background: #e9e5dd; transition: background 0.15s;
+}
+.b-grade-cell:hover { background:#990000; }
+.b-grade-cell:hover .b-gc-grade { color: white; }
+.b-grade-cell:hover .b-gc-cat { color: #888; }
+.b-gc-grade {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; color: #000; line-height: 1; transition: color 0.15s;
+}
+.b-gc-cat {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; letter-spacing: 2px; color: #666;
+  margin-top: 6px; text-transform: uppercase; transition: color 0.15s;
+}
+
+.b-sw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 0 30px 30px; }
+.b-sw-col { padding: 25px; border: 2px solid #000; }
+.b-sw-col:first-child { border-right: none; background: #111; }
+.b-sw-col h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; margin-bottom: 15px; }
+.b-sw-col:first-child h3 { color: white; }
+.b-sw-col:last-child h3 { color: #000; }
+.b-sw-col ul { list-style: none; }
+.b-sw-col li { padding: 8px 0; padding-left: 22px; position: relative; font-size: 14px; }
+.b-sw-col:first-child li { color: rgba(255,255,255,0.8); }
+.b-sw-col:last-child li { color: #333; }
+.b-sw-col:first-child li::before { content: '→'; position: absolute; left: 0; color: white; font-weight: bold; }
+.b-sw-col:last-child li::before { content: '×'; position: absolute; left: 0; color: #c00; font-weight: bold; }
+
+.b-games { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 30px 30px; }
+.b-game-tag {
+  background: #990000; color: white;
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+  padding: 6px 16px; letter-spacing: 2px;
+}
+
+.b-summary { margin: 0 30px 30px; padding: 28px; background: #111; border-left: 6px solid white; }
+.b-summary p { color: rgba(255,255,255,0.8); line-height: 1.9; font-size: 15px; }
+
+.b-cf-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0; margin: 0 30px 30px; border: 2px solid #000;
+}
+.b-cf-card { border: 1px solid #000; padding: 22px; background: #e9e5dd; transition: all 0.15s; }
+.b-cf-card:hover { background: #990000; }
+.b-cf-card:hover .b-cf-title { color: white; }
+.b-cf-card:hover .b-cf-desc { color: rgba(255,255,255,0.7); }
+.b-cf-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px;
+  color: #000; margin-bottom: 8px; transition: color 0.15s;
+}
+.b-cf-desc { font-size: 13px; line-height: 1.7; color: #555; transition: color 0.15s; }
+
+body { background: #e9e5dd; }
+section { display: block !important; padding-top: 0; min-height: unset; }

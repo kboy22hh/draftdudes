@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DraftDudes — 2026 Mock Draft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;600;700&family=Rajdhani:wght@300;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Main.css">
+  <style>
+    /* ── PAGE LAYOUT ── */
+    .page-wrap {
+      padding-top: 58px;
+      min-height: 100vh;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 3.5rem 5rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .page-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 0.95;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+
+    .page-title span { color: var(--accent); }
+
+    .page-meta {
+      text-align: right;
+    }
+
+    .page-meta-val {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .page-meta-lbl {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    /* ── MOCK DRAFT TABLE SECTION ── */
+    .mock-wrap {
+      padding: 3rem 5rem 5rem;
+    }
+
+    /* ── TABLE ── */
+    .mock-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--border);
+      border: 1px solid var(--border);
+      gap: 1px;
+    }
+
+    .mock-table thead tr {
+      background: var(--accent2);
+    }
+
+    .mock-table thead th {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 0.85rem 1.25rem;
+      text-align: left;
+      border-right: 1px solid rgba(192,200,216,0.1);
+      white-space: nowrap;
+    }
+
+    .mock-table thead th:last-child { border-right: none; }
+
+    /* Divider column between the two halves */
+    .mock-table thead th.divider,
+    .mock-table tbody td.divider {
+      width: 1px;
+      padding: 0;
+      background: var(--border);
+      border: none;
+    }
+
+    .mock-table tbody tr {
+      background: var(--card);
+      transition: background 0.15s;
+    }
+
+    .mock-table tbody tr:hover { background: #131d35; }
+
+    .mock-table tbody td {
+      padding: 0.9rem 1.25rem;
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .mock-table tbody td:last-child { border-right: none; }
+
+    /* Pick number */
+    .td-pick {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--muted);
+      line-height: 1;
+      width: 56px;
+      text-align: center;
+    }
+
+    /* Team name */
+    .td-team {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* Player name */
+    .td-player {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--white);
+      white-space: nowrap;
+    }
+
+    /* ── ROUND LABEL ROWS ── */
+    .round-label td {
+      background: var(--dark) !important;
+      padding: 0.5rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .round-label td span {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .page-header { padding: 2.5rem 1.5rem 1.5rem; flex-direction: column; align-items: flex-start; }
+      .page-meta { text-align: left; }
+      .mock-wrap { padding: 1.5rem; }
+
+      /* Stack table: hide right-side columns, show single list */
+      .mock-table thead th.col-r,
+      .mock-table tbody td.col-r,
+      .mock-table thead th.divider,
+      .mock-table tbody td.divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav" id="mainNav">
+  <a href="index.html" class="nav-logo">Draft<span>Dudes</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="MockDraft.html" class="active">Mock Draft</a></li>
+  </ul>
+  <a href="#" class="nav-cta">2026 Draft</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">OGZ Draft · 2026 NFL Draft</div>
+      <h1 class="page-title">Mock <span>Draft</span></h1>
+    </div>
+    <div class="page-meta">
+      <div class="page-meta-val">32</div>
+      <div class="page-meta-lbl">First Round Picks</div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="mock-wrap">
+    <table class="mock-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Team</th>
+          <th>Player</th>
+          <th class="divider"></th>
+          <th class="col-r">#</th>
+          <th class="col-r">Team</th>
+          <th class="col-r">Player</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-pick">1</td>
+          <td class="td-team">Las Vegas Raiders</td>
+          <td class="td-player">Fernando Mendoza</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">17</td>
+          <td class="td-team col-r">Detroit Lions</td>
+          <td class="td-player col-r">Spencer Fano</td>
+        </tr>
+        <tr>
+          <td class="td-pick">2</td>
+          <td class="td-team">New York Jets</td>
+          <td class="td-player">Arvell Reese</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">18</td>
+          <td class="td-team col-r">Minnesota Vikings</td>
+          <td class="td-player col-r">Dillon Thieneman</td>
+        </tr>
+        <tr>
+          <td class="td-pick">3</td>
+          <td class="td-team">Arizona Cardinals</td>
+          <td class="td-player">David Bailey</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">19</td>
+          <td class="td-team col-r">Carolina Panthers</td>
+          <td class="td-player col-r">Kenyon Sadiq</td>
+        </tr>
+        <tr>
+          <td class="td-pick">4</td>
+          <td class="td-team">Tennessee Titans</td>
+          <td class="td-player">Jeremiyah Love</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">20</td>
+          <td class="td-team col-r">Dallas Cowboys</td>
+          <td class="td-player col-r">Ahkeem Mesidor</td>
+        </tr>
+        <tr>
+          <td class="td-pick">5</td>
+          <td class="td-team">New York Giants</td>
+          <td class="td-player">Sonny Styles</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">21</td>
+          <td class="td-team col-r">Pittsburgh Steelers</td>
+          <td class="td-player col-r">Monroe Freeling</td>
+        </tr>
+        <tr>
+          <td class="td-pick">6</td>
+          <td class="td-team">Cleveland Browns</td>
+          <td class="td-player">Carnell Tate</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">22</td>
+          <td class="td-team col-r">Los Angeles Chargers</td>
+          <td class="td-player col-r">T.J. Parker</td>
+        </tr>
+        <tr>
+          <td class="td-pick">7</td>
+          <td class="td-team">Washington Commanders</td>
+          <td class="td-player">Caleb Downs</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">23</td>
+          <td class="td-team col-r">Philadelphia Eagles</td>
+          <td class="td-player col-r">Kaydyn Proctor</td>
+        </tr>
+        <tr>
+          <td class="td-pick">8</td>
+          <td class="td-team">New Orleans Saints</td>
+          <td class="td-player">Mansoor Delane</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">24</td>
+          <td class="td-team col-r">Cleveland Browns</td>
+          <td class="td-player col-r">Blake Miller</td>
+        </tr>
+        <tr>
+          <td class="td-pick">9</td>
+          <td class="td-team">Kansas City Chiefs</td>
+          <td class="td-player">Francis Mauigoa</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">25</td>
+          <td class="td-team col-r">Chicago Bears</td>
+          <td class="td-player col-r">Emmanuel Mcneil-Warren</td>
+        </tr>
+        <tr>
+          <td class="td-pick">10</td>
+          <td class="td-team">Cincinnati Bengals</td>
+          <td class="td-player">Jordyn Tyson</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">26</td>
+          <td class="td-team col-r">Buffalo Bills</td>
+          <td class="td-player col-r">Cashius Howell</td>
+        </tr>
+        <tr>
+          <td class="td-pick">11</td>
+          <td class="td-team">Miami Dolphins</td>
+          <td class="td-player">Ruben Bain</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">27</td>
+          <td class="td-team col-r">San Francisco 49ers</td>
+          <td class="td-player col-r">Caleb Lomu</td>
+        </tr>
+        <tr>
+          <td class="td-pick">12</td>
+          <td class="td-team">Indianapolis Colts</td>
+          <td class="td-player">Jermod McCoy</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">28</td>
+          <td class="td-team col-r">Houston Texans</td>
+          <td class="td-player col-r">Peter Woods</td>
+        </tr>
+        <tr>
+          <td class="td-pick">13</td>
+          <td class="td-team">Los Angeles Rams</td>
+          <td class="td-player">Makai Lemon</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">29</td>
+          <td class="td-team col-r">Kansas City Cheifs</td>
+          <td class="td-player col-r">Kevin Concepcion</td>
+        </tr>
+        <tr>
+          <td class="td-pick">14</td>
+          <td class="td-team">Baltimore Ravens</td>
+          <td class="td-player">Olaivavega Ioane</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">30</td>
+          <td class="td-team col-r">Miami Dolphins</td>
+          <td class="td-player col-r">Denzel Boston</td>
+        </tr>
+        <tr>
+          <td class="td-pick">15</td>
+          <td class="td-team">Tampa Bay Buccaneers</td>
+          <td class="td-player">Keldric Faulk</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">31</td>
+          <td class="td-team col-r">New England Patriots </td>
+          <td class="td-player col-r">Max Iheanachor</td>
+        </tr>
+        <tr>
+          <td class="td-pick">16</td>
+          <td class="td-team">New York Jets</td>
+          <td class="td-player">Omar Cooper Jr.</td>
+          <td class="divider"></td>
+          <td class="td-pick col-r">32</td>
+          <td class="td-team col-r">Seattle Seahawks</td>
+          <td class="td-player col-r">Avieon Terrell</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">OGZ<span>Draft</span></div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">Rankings</a></li>
+    <li><a href="#">Big Board</a></li>
+    <li><a href="MockDraft.html">Mock Draft</a></li>
+    <li><a href="#">Scouting Reports</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 OGZ Draft · All Rights Reserved</div>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const nav = document.getElementById('mainNav');
+  hamburger.addEventListener('click', () => nav.classList.toggle('open'));
+</script>
+
+</body>
+</html>
